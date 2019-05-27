@@ -37,6 +37,10 @@ def on_update(delta_time):
         block_y -= 25
         time = 0
 
+    if block_y == 15:
+        time = 0
+
+
     if right_pressed and block_x <= 265:
         block_x += 25
 
@@ -46,11 +50,13 @@ def on_update(delta_time):
     if down_pressed and block_y >= 40:
         block_y -= 25
 
+    elif down_pressed == False:
+        arcade.draw_rectangle_filled(block_x, block_y, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+
     if block_x > 360:
         if right_pressed:
             block_x += 0
 
-    print(delta_time)
 def on_draw():
     global block_x, block_y
 
