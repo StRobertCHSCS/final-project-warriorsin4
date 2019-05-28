@@ -1,15 +1,17 @@
 import arcade
 
 
-WIDTH = 640
-HEIGHT = 480
+WIDTH = 305
+HEIGHT = 460
 
 grid_height = 20
 grid_width = 20
-margin = 5
+MARGIN = 5
 
-row_count = 12
-column_count = 18
+column_count = 12
+row_count = 18
+
+grid = []
 
 
 def on_update(delta_time):
@@ -17,10 +19,19 @@ def on_update(delta_time):
 
 
 def on_draw():
+    global grid_width, grid_height, column_count, row_count, MARGIN, WIDTH, HEIGHT
     arcade.start_render()
 
     for row in range(row_count):
         for column in range(column_count):
+            if grid[row][column] == 0:
+                colour = arcade.color.WHITE
+
+            x = (MARGIN + grid_width) * column + MARGIN + grid_width // 2
+            y = (MARGIN + grid_height) * row + MARGIN + grid_height // 2
+
+
+            arcade.draw_rectangle_outline(x, y, grid_width, grid_height, colour)
 
 
 
@@ -34,12 +45,22 @@ def on_key_release(key, modifiers):
 
 
 def on_mouse_press(x, y, button, modifiers):
-    pass
+    row = y // (grid_height + MARGIN)
+    column = x // (grid_width + MARGIN)
+
+    print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
 
 
 def setup():
+
+    for row in range(row_count):
+        grid.append([])
+        for column in range(column_count):
+            grid[row].append(0)
+
+
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
-    arcade.set_background_color(arcade.color.WHITE)
+    arcade.set_background_color(arcade.color.LIGHT_BLUE)
     arcade.schedule(on_update, 1/60)
 
     # Override arcade window methods
