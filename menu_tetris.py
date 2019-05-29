@@ -13,8 +13,14 @@ row_count = 18
 
 grid = []
 
+right_pressed = False
+left_pressed = False
+down_pressed = False
 
 def on_update(delta_time):
+    pass
+
+def draw_shape(x, y):
     pass
 
 
@@ -24,24 +30,47 @@ def on_draw():
 
     for row in range(row_count):
         for column in range(column_count):
+            if grid[row][column] == 1:
+                color = arcade.color.PURPLE_PIZZAZZ
             if grid[row][column] == 0:
-                colour = arcade.color.WHITE
+                color = arcade.color.WHITE
+
 
             x = (MARGIN + grid_width) * column + MARGIN + grid_width // 2
             y = (MARGIN + grid_height) * row + MARGIN + grid_height // 2
 
-
-            arcade.draw_rectangle_outline(x, y, grid_width, grid_height, colour)
-
+            arcade.draw_rectangle_filled(x, y, grid_width, grid_height, color)
 
 
 
-def on_key_press(key, modifiers):
-    pass
+
+def on_key_press(key, modifiers, x, y):
+    global right_pressed, left_pressed, down_pressed, block_x, block_y
+
+    row = y // (grid_height + MARGIN)
+    column = x // (grid_width + MARGIN)
+
+    if key == arcade.key.D:
+        right_pressed = True
+
+    if key == arcade.key.A:
+        left_pressed = True
+
+    if key == arcade.key.S:
+        down_pressed = True
 
 
 def on_key_release(key, modifiers):
-    pass
+    global right_pressed, left_pressed, down_pressed, block_x, block_y
+
+    if key == arcade.key.D:
+        right_pressed = False
+
+    if key == arcade.key.A:
+        left_pressed = False
+
+    if key == arcade.key.S:
+        down_pressed = False
 
 
 def on_mouse_press(x, y, button, modifiers):
@@ -49,6 +78,11 @@ def on_mouse_press(x, y, button, modifiers):
     column = x // (grid_width + MARGIN)
 
     print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
+    if row < row_count and column < column_count:
+        if grid[row][column] == 0:
+            grid[row][column] = 1
+        else:
+            grid[row][column] = 0
 
 
 def setup():
