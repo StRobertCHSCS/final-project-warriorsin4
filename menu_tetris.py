@@ -13,6 +13,7 @@ row_count = 18
 
 grid = []
 
+space_pressed = False
 right_pressed = False
 left_pressed = False
 down_pressed = False
@@ -50,6 +51,9 @@ def on_key_press(key, modifiers, x, y):
     row = y // (grid_height + MARGIN)
     column = x // (grid_width + MARGIN)
 
+    if key == arcade.key.SPACE:
+        space_pressed = False
+
     if key == arcade.key.D:
         right_pressed = True
 
@@ -61,7 +65,10 @@ def on_key_press(key, modifiers, x, y):
 
 
 def on_key_release(key, modifiers):
-    global right_pressed, left_pressed, down_pressed, block_x, block_y
+    global right_pressed, left_pressed, down_pressed, block_x, block_y,  space_pressed
+
+    if key == arcade.key.SPACE:
+        space_pressed = False
 
     if key == arcade.key.D:
         right_pressed = False
