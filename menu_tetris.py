@@ -13,9 +13,12 @@ row_count = 18
 
 grid = []
 
+right_pressed = False
+left_pressed = False
+down_pressed = False
 
-def on_update(delta_time):
-    pass
+def on_update( delta_time):
+    global right_pressed, grid
 
 
 def on_draw():
@@ -24,6 +27,8 @@ def on_draw():
 
     for row in range(row_count):
         for column in range(column_count):
+            if grid[row][column] == 1:
+                colour = arcade.color.PURPLE_PIZZAZZ
             if grid[row][column] == 0:
                 colour = arcade.color.WHITE
 
@@ -31,13 +36,18 @@ def on_draw():
             y = (MARGIN + grid_height) * row + MARGIN + grid_height // 2
 
 
-            arcade.draw_rectangle_outline(x, y, grid_width, grid_height, colour)
-
-
 
 
 def on_key_press(key, modifiers):
-    pass
+    global right_pressed, left_pressed, down_pressed
+    if key == arcade.key.D:
+        right_pressed = True
+
+    if key == arcade.key.A:
+        left_pressed = True
+
+    if key == arcade.key.S:
+        down_pressed = True
 
 
 def on_key_release(key, modifiers):
@@ -57,7 +67,6 @@ def setup():
         grid.append([])
         for column in range(column_count):
             grid[row].append(0)
-
 
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
     arcade.set_background_color(arcade.color.LIGHT_BLUE)
