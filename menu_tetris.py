@@ -13,12 +13,23 @@ row_count = 18
 
 grid = []
 
+start_x = 5
+start_y = 17
+
 right_pressed = False
 left_pressed = False
 down_pressed = False
 
-def on_update( delta_time):
-    global right_pressed, grid
+
+def on_update(delta_time):
+    global start_y, start_x
+
+    if grid[start_y][start_x] == 1:
+        grid[start_y][start_x] = 0
+        grid[start_y-1][start_x] = 1
+        start_y -= 1
+
+
 
 
 def on_draw():
@@ -30,16 +41,20 @@ def on_draw():
             if grid[row][column] == 1:
                 colour = arcade.color.PURPLE_PIZZAZZ
             if grid[row][column] == 0:
-                colour = arcade.color.WHITE
+               colour = arcade.color.WHITE
 
             x = (MARGIN + grid_width) * column + MARGIN + grid_width // 2
             y = (MARGIN + grid_height) * row + MARGIN + grid_height // 2
 
 
+            arcade.draw_rectangle_filled(x, y, grid_width, grid_height, colour)
+
+
 
 
 def on_key_press(key, modifiers):
-    global right_pressed, left_pressed, down_pressed
+    global right_pressed, left_pressed, down_pressed, block_x, block_y
+
     if key == arcade.key.D:
         right_pressed = True
 
@@ -51,15 +66,28 @@ def on_key_press(key, modifiers):
 
 
 def on_key_release(key, modifiers):
-    pass
+    global right_pressed, left_pressed, down_pressed, block_x, block_y
+
+    if key == arcade.key.D:
+        right_pressed = False
+
+    if key == arcade.key.A:
+        left_pressed = False
+
+    if key == arcade.key.S:
+        down_pressed = False
 
 
 def on_mouse_press(x, y, button, modifiers):
+    global start_y, start_x
     row = y // (grid_height + MARGIN)
     column = x // (grid_width + MARGIN)
 
     print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
+    if row < row_count and column < column_count:
 
+        if grid[row][column] == 0:
+            grid[start_y][start_x] = 1
 
 def setup():
 
@@ -68,9 +96,10 @@ def setup():
         for column in range(column_count):
             grid[row].append(0)
 
+
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
     arcade.set_background_color(arcade.color.LIGHT_BLUE)
-    arcade.schedule(on_update, 1/60)
+    arcade.schedule(on_update, 1/8)
 
     # Override arcade window methods
     window = arcade.get_window()
