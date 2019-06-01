@@ -24,10 +24,68 @@ down_pressed = False
 def on_update(delta_time):
     global start_y, start_x
 
-    if grid[start_y][start_x] == 1:
-        grid[start_y][start_x] = 0
-        grid[start_y-1][start_x] = 1
-        start_y -= 1
+    for row in range(row_count):
+        for column in range(column_count):
+            if grid[row][column] == 1:
+                grid[row-1][column] = 1
+                grid[row][column] = 0
+            if grid[0][5] == 1:
+                grid[0][5] = 1
+                break
+            if right_pressed:
+                grid[row+1][column] = 1
+                grid[row][column] = 0
+            # if grid[0][6] == 1:
+            #     grid[0][6] = 1
+            #     start_y += 1
+            # if grid[0][7] == 1:
+            #     grid[0][7] = 1
+            #     start_y += 1
+            # if grid[0][4] == 1:
+            #     grid[0][4] = 1
+            #     start_y += 1
+            # if grid[0][3] == 1:
+            #     grid[0][3] = 1
+            #     start_y += 1
+            # if grid[0][2] == 1:
+            #     grid[0][2] = 1
+            #     start_y += 1
+            # if grid[0][1] == 1:
+            #     grid[0][1] = 1
+            #     start_y += 1
+            # if grid[0][8] == 1:
+            #     grid[0][8] = 1
+            #     start_y += 1
+
+            # if grid[start_y][start_x] == 1:
+            #     grid[start_y][start_x] = 0
+            #     grid[start_y - 1][start_x] = 1
+            #     start_y -= 1
+            #     if grid[0][5] == 1:
+            #         grid[0][5] = 1
+            #         start_y += 1
+                    # if grid[0][6] == 1:
+                    #     grid[0][6] = 1
+                    #     start_y += 1
+                    # if grid[0][7] == 1:
+                    #     grid[0][7] = 1
+                    #     start_y += 1
+                    # if grid[0][4] == 1:
+                    #     grid[0][4] = 1
+                    #     start_y += 1
+        # if grid[0][3] == 1:
+        #     grid[0][3] = 1
+        #     start_y += 1
+        # if grid[0][2] == 1:
+        #     grid[0][2] = 1
+        #     start_y += 1
+        # if grid[0][1] == 1:
+        #     grid[0][1] = 1
+        #     start_y += 1
+        # if grid[0][8] == 1:
+        #     grid[0][8] = 1
+        #     start_y += 1
+
 
 
 
@@ -53,10 +111,11 @@ def on_draw():
 
 
 def on_key_press(key, modifiers):
-    global right_pressed, left_pressed, down_pressed, block_x, block_y
+    global right_pressed, left_pressed, down_pressed, start_x, start_y
 
     if key == arcade.key.D:
         right_pressed = True
+        grid[start_y][start_x+1] = 1
 
     if key == arcade.key.A:
         left_pressed = True
@@ -99,7 +158,7 @@ def setup():
 
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
     arcade.set_background_color(arcade.color.LIGHT_BLUE)
-    arcade.schedule(on_update, 1/8)
+    arcade.schedule(on_update, 1/4)
 
     # Override arcade window methods
     window = arcade.get_window()
