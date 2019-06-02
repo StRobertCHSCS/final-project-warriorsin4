@@ -35,27 +35,34 @@ def on_update(delta_time):
 
     if time == 10:
         block_y -= 25
-        time = 0
 
     if block_y == 15:
         time = 0
+        down_pressed = False
+        right_pressed = False
+        left_pressed = False
+        if down_pressed == False:
+           arcade.draw_rectangle_filled(block_x)
 
-
-    if right_pressed and block_x <= 265:
-        block_x += 25
-
-    if left_pressed and block_x >= 40:
-        block_x -= 25
-
-    if down_pressed and block_y >= 40:
+    if down_pressed and block_y >= 40 and down_pressed == True:
         block_y -= 25
 
-    elif down_pressed == False:
-        arcade.draw_rectangle_filled(140, 140, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+    if right_pressed and block_x <= 265 and right_pressed == True:
+        block_x += 25
 
-    if block_x > 360:
-        if right_pressed:
-            block_x += 0
+    if left_pressed and block_x >= 40 and left_pressed == True:
+        block_x -= 25
+
+
+
+        # elif down_pressed == False:
+    #     arcade.draw_rectangle_filled(140, 140, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+
+
+
+
+
+
 
 def on_draw():
     global block_x, block_y
@@ -72,6 +79,10 @@ def on_draw():
 
             # Draw the box
             arcade.draw_rectangle_filled(x, y, WIDTH, HEIGHT, arcade.color.WHITE)
+
+            if arcade.color.PURPLE_PIZZAZZ == True:
+                grid[row][column] = 1
+
 
     arcade.draw_rectangle_filled(430, 235, 250, 500, arcade.color.BEIGE)
 
