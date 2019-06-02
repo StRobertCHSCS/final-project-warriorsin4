@@ -29,65 +29,16 @@ def on_update(delta_time):
             if grid[row][column] == 1:
                 grid[row-1][column] = 1
                 grid[row][column] = 0
-            if grid[0][5] == 1:
-                grid[0][5] = 1
+            if row == 1:
                 break
-            if right_pressed:
-                grid[row+1][column] = 1
-                grid[row][column] = 0
-            # if grid[0][6] == 1:
-            #     grid[0][6] = 1
-            #     start_y += 1
-            # if grid[0][7] == 1:
-            #     grid[0][7] = 1
-            #     start_y += 1
-            # if grid[0][4] == 1:
-            #     grid[0][4] = 1
-            #     start_y += 1
-            # if grid[0][3] == 1:
-            #     grid[0][3] = 1
-            #     start_y += 1
-            # if grid[0][2] == 1:
-            #     grid[0][2] = 1
-            #     start_y += 1
-            # if grid[0][1] == 1:
-            #     grid[0][1] = 1
-            #     start_y += 1
-            # if grid[0][8] == 1:
-            #     grid[0][8] = 1
-            #     start_y += 1
 
-            # if grid[start_y][start_x] == 1:
-            #     grid[start_y][start_x] = 0
-            #     grid[start_y - 1][start_x] = 1
-            #     start_y -= 1
-            #     if grid[0][5] == 1:
-            #         grid[0][5] = 1
-            #         start_y += 1
-                    # if grid[0][6] == 1:
-                    #     grid[0][6] = 1
-                    #     start_y += 1
-                    # if grid[0][7] == 1:
-                    #     grid[0][7] = 1
-                    #     start_y += 1
-                    # if grid[0][4] == 1:
-                    #     grid[0][4] = 1
-                    #     start_y += 1
-        # if grid[0][3] == 1:
-        #     grid[0][3] = 1
-        #     start_y += 1
-        # if grid[0][2] == 1:
-        #     grid[0][2] = 1
-        #     start_y += 1
-        # if grid[0][1] == 1:
-        #     grid[0][1] = 1
-        #     start_y += 1
-        # if grid[0][8] == 1:
-        #     grid[0][8] = 1
-        #     start_y += 1
+    for row in range(row_count):
+        for column in range(column_count):
+            grid[row][0] = 2
+            grid[0][column] = 2
+            grid[row][11] = 2
 
-
-
+        
 
 
 def on_draw():
@@ -99,11 +50,12 @@ def on_draw():
             if grid[row][column] == 1:
                 colour = arcade.color.PURPLE_PIZZAZZ
             if grid[row][column] == 0:
-               colour = arcade.color.WHITE
+                colour = arcade.color.WHITE
+            if grid[row][column] == 2:
+                colour = arcade.color.SILVER
 
             x = (MARGIN + grid_width) * column + MARGIN + grid_width // 2
             y = (MARGIN + grid_height) * row + MARGIN + grid_height // 2
-
 
             arcade.draw_rectangle_filled(x, y, grid_width, grid_height, colour)
 
@@ -115,7 +67,6 @@ def on_key_press(key, modifiers):
 
     if key == arcade.key.D:
         right_pressed = True
-        grid[start_y][start_x+1] = 1
 
     if key == arcade.key.A:
         left_pressed = True

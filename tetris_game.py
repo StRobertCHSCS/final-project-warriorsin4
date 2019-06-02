@@ -51,7 +51,7 @@ def on_update(delta_time):
         block_y -= 25
 
     elif down_pressed == False:
-        arcade.draw_rectangle_filled(140, 140a, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+        arcade.draw_rectangle_filled(140, 140, 20, 20, arcade.color.PURPLE_PIZZAZZ)
 
     if block_x > 360:
         if right_pressed:
