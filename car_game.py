@@ -42,6 +42,9 @@ def on_update(delta_time):
         x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
         y_pos_rect = 500
 
+    if (x_pos_ball == left_car or x_pos_ball == right_car) and (y_pos_ball - 7.5) == 45:
+        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
+        y_pos_ball = 500
 
 def car():
     # drawing the cars
