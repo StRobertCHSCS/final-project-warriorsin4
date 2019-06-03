@@ -18,8 +18,8 @@ SCREEN_HEIGHT = (HEIGHT + MARGIN) * ROW_COUNT + MARGIN
 
 grid = []
 
-block_x = 15
-block_y = 365
+block_x = 165
+block_y = 440
 
 gravity = 25
 time = 0
@@ -36,21 +36,40 @@ def on_update(delta_time):
     if time == 10:
         block_y -= 25
         time = 0
+    if block_y == 15:
+        time = 0
+        down_pressed = False
+        right_pressed = False
+        left_pressed = False
 
-    if right_pressed and block_x <= 265:
-        block_x += 25
-
-    if left_pressed and block_x >= 40:
-        block_x -= 25
-
-    if down_pressed and block_y >= 40:
+    if down_pressed and block_y >= 65:
         block_y -= 25
 
-    if block_x > 360:
-        if right_pressed:
-            block_x += 0
+    if right_pressed and block_x <= 280:
+        block_x += 25
 
-    print(delta_time)
+    if left_pressed and block_x >= 65:
+        block_x -= 25
+
+    if block_y == 440:
+        if down_pressed and block_y >= 40:
+            block_y -= 25
+
+        if right_pressed and block_x <= 265:
+            block_x += 25
+
+        if left_pressed and block_x >= 40:
+            block_x -= 25
+
+        # elif down_pressed == False:
+    #     arcade.draw_rectangle_filled(140, 140, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+
+
+
+
+
+
+
 def on_draw():
     global block_x, block_y
 
@@ -67,9 +86,21 @@ def on_draw():
             # Draw the box
             arcade.draw_rectangle_filled(x, y, WIDTH, HEIGHT, arcade.color.WHITE)
 
+
+            if arcade.color.PURPLE_PIZZAZZ == True:
+                grid[row][column] = 1
+
+
     arcade.draw_rectangle_filled(430, 235, 250, 500, arcade.color.BEIGE)
 
     arcade.draw_rectangle_filled(block_x, block_y, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+    arcade.draw_rectangle_filled(block_x + 25, block_y, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+    arcade.draw_rectangle_filled(block_x - 25, block_y, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+    arcade.draw_rectangle_filled(block_x, block_y - 25, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+
+    if down_pressed == False and block_y == 15:
+        block = arcade.draw_rectangle_filled(165, 440, 20, 20, arcade.color.PURPLE_PIZZAZZ)
+
 
 def on_key_press(key, modifiers):
     global right_pressed, left_pressed, down_pressed, block_x, block_y
