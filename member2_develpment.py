@@ -36,7 +36,7 @@ def on_update(delta_time):
         left_y_obstacle -= 40
         right_y_obstacle -= 30
         time = 0
-        
+
 def car():
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
     arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
