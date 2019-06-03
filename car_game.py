@@ -57,6 +57,7 @@ def on_update(delta_time):
         score += 1
 
 
+
 def car():
     # drawing the cars
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
