@@ -69,6 +69,7 @@ def obstacles():
     arcade.draw_rectangle_filled(x_pos_rect, y_pos_rect, rect_width, rect_width, arcade.color.BLACK)
 
 
+
 def on_key_press(key, modifiers):
     global left_car, right_car
 
