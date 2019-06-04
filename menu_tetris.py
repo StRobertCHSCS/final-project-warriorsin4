@@ -40,7 +40,6 @@ def on_update(delta_time):
 
         
 
-
 def on_draw():
     global grid_width, grid_height, column_count, row_count, MARGIN, WIDTH, HEIGHT
     arcade.start_render()

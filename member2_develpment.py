@@ -4,16 +4,17 @@ import random
 WIDTH = 300
 HEIGHT = 500
 
-# Set a time variable
-time= 0
+# all possible x values for obstacles
+x_pos = [37.5, 112.5, 187.5, 262.5]
+y_pos = [520, 550, 560, 590, 620, 610, 620, 640, 600, 500]
 
-# obstacle positions
-x_pos_ball = [37.5, 112.5, 187.5, 262.5]
-y_pos_ball = HEIGHT
-ball_diameter = 30
+# randomly selecting x_vales for obstacles
+x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
+y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
+ball_diameter = 15
 
-x_pos_rect = [37.5, 112.5, 187.5, 262.5]
-y_pos_rect = HEIGHT
+x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
 rect_width = 30
 
 # player positions
@@ -21,30 +22,52 @@ left_car = 37.5
 right_car = 262.5
 car_width = 40
 
-# Obstacle positions
-left_obstacle = 37.5
-right_obstacle = 262.5
-left_y_obstacle = 480
-right_y_obstacle = 480
-obstacle_width = 20
+# score counter
+score = 0
 
 
 def on_update(delta_time):
-    global time, left_y_obstacle, right_y_obstacle
-    time += 1
-    if time == 10:
-        left_y_obstacle -= 40
-        right_y_obstacle -= 30
-        time = 0
-        
+    global y_pos_ball, y_pos_rect
+    global x_pos_rect, x_pos_ball
+    global score
+
+    # makes the obstacles fall and reset once at bottom
+    if x_pos_ball == x_pos_rect and (y_pos_ball + 30 == y_pos_rect or y_pos_ball + 30 == y_pos_rect):
+        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+
+    y_pos_ball -= 2.5
+    if y_pos_ball < 0:
+        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
+        y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
+        score = 0
+
+    y_pos_rect -= 2.5
+    if y_pos_rect < 0:
+        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+        y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
+
+    # collision
+    # if (x_pos_rect == left_car or x_pos_rect == right_car) and (y_pos_rect - 30) == 45:
+    #     x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+    #     y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
+    #     score = 0
+    #
+    # if (x_pos_ball == left_car or x_pos_ball == right_car) and (y_pos_ball - 7.5) == 45:
+    #     x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
+    #     y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
+    #     score += 1
+
+
+
 def car():
+    # drawing the cars
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
     arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
 
 
-def obstacle():
-    arcade.draw_rectangle_filled(left_obstacle, left_y_obstacle, obstacle_width, obstacle_width, arcade.color.BLUE)
-    arcade.draw_rectangle_filled(right_obstacle, right_y_obstacle, obstacle_width, obstacle_width, arcade.color.RED)
+def obstacles():
+    arcade.draw_ellipse_filled(x_pos_ball, y_pos_ball, ball_diameter, ball_diameter, arcade.color.BLACK)
+    arcade.draw_rectangle_filled(x_pos_rect, y_pos_rect, rect_width, rect_width, arcade.color.BLACK)
 
 
 def on_key_press(key, modifiers):
@@ -62,12 +85,14 @@ def on_key_press(key, modifiers):
     elif key == arcade.key.DOWN and right_car == 187.5:
         right_car += 75
 
+
 def on_key_release(key, modifiers):
     pass
 
 
 def on_mouse_press(x, y, button, modifiers):
     pass
+
 
 def on_draw():
     arcade.start_render()
@@ -79,14 +104,19 @@ def on_draw():
         elif x == 150:
             arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 15)
 
+    # drawing the obstacles
+    obstacles()
+
+    arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
+
     car()
-    obstacle()
+
 
 def setup():
-    arcade.open_window(WIDTH, HEIGHT, "2 Cars")
+    arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
     arcade.set_background_color(arcade.color.WHITE)
     arcade.schedule(on_update, 1/60)
-    obstacle()
+
     # Override arcade window methods
     window = arcade.get_window()
     window.on_draw = on_draw

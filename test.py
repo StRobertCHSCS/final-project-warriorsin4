@@ -9,11 +9,11 @@ x_pos = [37.5, 112.5, 187.5, 262.5]
 
 # randomly selecting x_vales for obstacles
 x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-y_pos_ball = HEIGHT
+y_pos_ball = 500
 ball_diameter = 15
 
 x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-y_pos_rect = HEIGHT
+y_pos_rect = 500
 rect_width = 30
 
 # player positions
@@ -21,9 +21,40 @@ left_car = 37.5
 right_car = 262.5
 car_width = 40
 
+# score counter
+score = 0
+
 
 def on_update(delta_time):
-    pass
+    global y_pos_ball, y_pos_rect
+    global x_pos_rect, x_pos_ball
+    global score
+
+    # makes the obstacles fall and reset once at bottom
+    if x_pos_ball == x_pos_rect and (y_pos_ball + 30 == y_pos_rect or y_pos_ball + 30 == y_pos_rect):
+        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+
+    y_pos_ball -= 2.5
+    if y_pos_ball < 0:
+        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
+        y_pos_ball = 500
+        score = 0
+
+    y_pos_rect -= 2.5
+    if y_pos_rect < 0:
+        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+        y_pos_rect = 500
+
+    # collision
+    if (x_pos_rect == left_car or x_pos_rect == right_car) and (y_pos_rect - 30) == 45:
+        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+        y_pos_rect = 500
+        score = 0
+
+    if (x_pos_ball == left_car or x_pos_ball == right_car) and (y_pos_ball - 7.5) == 45:
+        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
+        y_pos_ball = 500
+        score += 1
 
 
 def car():
@@ -33,10 +64,8 @@ def car():
 
 
 def obstacles():
-    # drawing the obstacles
     arcade.draw_ellipse_filled(x_pos_ball, y_pos_ball, ball_diameter, ball_diameter, arcade.color.BLACK)
     arcade.draw_rectangle_filled(x_pos_rect, y_pos_rect, rect_width, rect_width, arcade.color.BLACK)
-
 
 
 def on_key_press(key, modifiers):
@@ -73,8 +102,13 @@ def on_draw():
         elif x == 150:
             arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 15)
 
-    car()
+    # drawing the obstacles
     obstacles()
+    obstacles()
+
+    arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
+
+    car()
 
 
 def setup():
