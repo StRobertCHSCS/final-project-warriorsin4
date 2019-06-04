@@ -6,7 +6,7 @@ HEIGHT = 500
 
 # all possible x values for obstacles
 x_pos = [37.5, 112.5, 187.5, 262.5]
-
+y_pos = [500, 550, 540, 520]
 # randomly selecting x_vales for obstacles
 x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
 y_pos_ball = 500
@@ -57,6 +57,7 @@ def on_update(delta_time):
         score += 1
 
 
+
 def car():
     # drawing the cars
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
@@ -64,8 +65,10 @@ def car():
 
 
 def obstacles():
-    arcade.draw_ellipse_filled(x_pos_ball, y_pos_ball, ball_diameter, ball_diameter, arcade.color.BLACK)
-    arcade.draw_rectangle_filled(x_pos_rect, y_pos_rect, rect_width, rect_width, arcade.color.BLACK)
+    for x, y in zip(x_pos, y_pos):
+        arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.BLACK)
+        arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLACK)
+
 
 
 def on_key_press(key, modifiers):
