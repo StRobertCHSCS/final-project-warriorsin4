@@ -24,6 +24,7 @@ car_width = 40
 # score counter
 score = 0
 
+
 def on_update(delta_time):
     global y_pos_ball, y_pos_rect
     global x_pos_rect, x_pos_ball
