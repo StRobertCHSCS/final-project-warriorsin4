@@ -40,6 +40,7 @@ def car():
 def obstacles():
     for x, y in zip(x_pos, y_pos):
         arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLACK)
+    for x, y in zip(x_pos, y_pos):
         arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.BLUE)
 
 
@@ -78,7 +79,6 @@ def on_draw():
             arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 15)
 
     # drawing the obstacles
-    obstacles()
     obstacles()
 
     arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
