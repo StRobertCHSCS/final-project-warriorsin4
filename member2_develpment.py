@@ -4,18 +4,35 @@ import random
 WIDTH = 300
 HEIGHT = 500
 
-# all possible x values for obstacles
+# all possible x and y values for square obstacles
 x_pos_square = [37.5, 112.5, 187.5, 262.5]
-y_pos_square = [520,  620, 560, 520]
+y_pos_square = [700, 550, 600, 810]
 
+# Create a list that stores the falling squares
+x_pos_store_square = []
+y_pos_store_square = []
+
+for i in range(10):
+    x = random.randrange(len(x_pos_square))
+    y = random.randrange(len(y_pos_square))
+
+    x_pos_store_square.append(x)
+    y_pos_store_square.append(y)
+
+#  all possible x and y values for circle obstacles
 x_pos_circle = [37.5, 112.5, 187.5, 262.5]
-y_pos_circle = [520,  620, 560, 520]
+y_pos_circle = [800, 700, 500, 900]
 
-# randomly selecting x_vales for obstacles
+# Create a list that stores the falling circles
+x_pos_store_circle = []
+y_pos_store_circle = []
 
-ball_diameter = 15
-y_pos_square
-rect_width = 30
+for i in range(10):
+    x = random.randrange(len(x_pos_circle))
+    y = random.randrange(len(y_pos_circle))
+
+    x_pos_store_circle.append(x)
+    y_pos_store_circle.append(y)
 
 # player positions
 left_car = 37.5
@@ -24,34 +41,26 @@ car_width = 40
 
 # score counter
 score = 0
+ball_diameter = 15
+rect_width = 30
 
-for i in range(len(x_pos_square)):
-    x = x_pos_square[i]
-for i in range(len(y_pos_square)):
-    y = y_pos_square[i]
-
-    x_pos_square.append(x)
-    y_pos_square.append(y)
 
 def on_update(delta_time):
-    global y_pos_ball, y_pos_rect
-    global x_pos_rect, x_pos_ball
-    global score
+    global y_pos_square, x_pos_square
+    # makes the obstacles fall and reset once at bottom
+    for i in range(len(y_pos_square)):
+        y_pos_square[i] -= 2.5
 
+        if y_pos_square[i] < 0:
+            y_pos_square[i] = random.randrange(HEIGHT, HEIGHT + 50)
+            x_pos_square[i] = random.randrange(0, WIDTH)
 
-    if x_pos_square[i] == x_pos_square[i] and (y_pos_square[i] + 30 == y_pos_square[i] or y_pos_square[i] + 30 == y_pos_square[i]):
-        x_pos_square[i] = x_pos_square[(random.randrange(len(x_pos_square)))]
+    for i in range(len(y_pos_circle)):
+        y_pos_circle[i] -= 2.5
 
-    for index in range(len(y_pos_square)):
-        y_pos_square[index] -= 2.5
-
-
-        # make a new list
-        if y_pos_square[index] < 0:
-            y_pos_square[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_pos_square[index] = x_pos_square[(random.randrange(len(x_pos_square)))]
-
-
+        if y_pos_circle[i] < 0:
+            y_pos_circle[i] = random.randrange(HEIGHT, HEIGHT + 50)
+            x_pos_circle[i] = random.randrange(0, WIDTH)
 
 def car():
     # drawing the cars
@@ -61,8 +70,9 @@ def car():
 
 def obstacles():
     for x, y in zip(x_pos_square, y_pos_square):
-        arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLUE)
-        arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.RED)
+        arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLACK)
+    for x, y in zip(x_pos_circle, y_pos_circle):
+        arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.BLUE)
 
 
 def on_key_press(key, modifiers):
