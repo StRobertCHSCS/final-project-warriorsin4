@@ -4,8 +4,9 @@ import random
 WIDTH = 300
 HEIGHT = 500
 
-# all possible x values for obstacles
+# all possible starting x and y values for obstacles
 x_pos = [37.5, 112.5, 187.5, 262.5]
+y_pos = [500, 520, 540, 560]
 
 # randomly selecting x_vales for obstacles
 x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
@@ -55,7 +56,6 @@ def on_update(delta_time):
         x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
         y_pos_ball = 500
         score += 1
-
 
 
 def car():
