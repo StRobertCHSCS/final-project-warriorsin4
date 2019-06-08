@@ -6,14 +6,15 @@ HEIGHT = 500
 
 # all possible x values for obstacles
 x_pos = [37.5, 112.5, 187.5, 262.5]
+y_pos = [500, 550, 540, 520]
 
 # randomly selecting x_vales for obstacles
 x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-y_pos_ball = 500
+y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
 ball_diameter = 15
 
 x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-y_pos_rect = 500
+y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
 rect_width = 30
 
 # player positions
@@ -31,30 +32,11 @@ def on_update(delta_time):
     global score
 
     # makes the obstacles fall and reset once at bottom
-    if x_pos_ball == x_pos_rect and (y_pos_ball + 30 == y_pos_rect or y_pos_ball + 30 == y_pos_rect):
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+    for index in range(len(y_pos)):
+        y_pos[index] -= 2.5
 
-    y_pos_ball -= 2.5
-    if y_pos_ball < 0:
-        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_ball = 500
-        score = 0
+        if y_pos[index] < 0:
 
-    y_pos_rect -= 2.5
-    if y_pos_rect < 0:
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_rect = 500
-
-    # collision
-    if (x_pos_rect == left_car or x_pos_rect == right_car) and (y_pos_rect - 30) == 45:
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_rect = 500
-        score = 0
-
-    if (x_pos_ball == left_car or x_pos_ball == right_car) and (y_pos_ball - 7.5) == 45:
-        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_ball = 500
-        score += 1
 
 
 def car():
@@ -64,8 +46,10 @@ def car():
 
 
 def obstacles():
-    arcade.draw_ellipse_filled(x_pos_ball, y_pos_ball, ball_diameter, ball_diameter, arcade.color.BLACK)
-    arcade.draw_rectangle_filled(x_pos_rect, y_pos_rect, rect_width, rect_width, arcade.color.BLACK)
+    for x, y in zip(x_pos, y_pos):
+        arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.BLACK)
+        arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLACK)
+
 
 
 def on_key_press(key, modifiers):

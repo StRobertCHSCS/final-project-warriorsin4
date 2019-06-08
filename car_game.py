@@ -4,19 +4,6 @@ import random
 WIDTH = 300
 HEIGHT = 500
 
-# all possible starting x and y values for obstacles
-x_pos = [37.5, 112.5, 187.5, 262.5]
-y_pos = [500, 520, 540, 560]
-
-# randomly selecting x_vales for obstacles
-x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-y_pos_ball = 500
-ball_diameter = 15
-
-x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-y_pos_rect = 500
-rect_width = 30
-
 # player positions
 left_car = 37.5
 right_car = 262.5
@@ -24,49 +11,41 @@ car_width = 40
 
 # score counter
 score = 0
+ball_radius = 15
+rect_width = 30
+
+# empty list storing x and y values of obstacles
+x_circle = []
+y_circle = []
+
+x_square = []
+y_square = []
+
+for _ in range(10):
+    # generate random x and y values
+    x = random.randrange(0, WIDTH, 37)
+    y = random.randrange(HEIGHT, HEIGHT*2)
+
+    # append the x and y values to the appropriate list
+    x_circle.append(x)
+    y_circle.append(y)
 
 
 def on_update(delta_time):
-    global y_pos_ball, y_pos_rect
-    global x_pos_rect, x_pos_ball
-    global score
+    for index in range(len(y_circle)):
+        y_circle[index] -= 2.5
 
-    # makes the obstacles fall and reset once at bottom
-    if x_pos_ball == x_pos_rect and (y_pos_ball + 30 == y_pos_rect or y_pos_ball + 30 == y_pos_rect):
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+        if y_circle[index] < 0:
+            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_circle[index] = random.randrange(0, WIDTH, 38)
 
-    y_pos_ball -= 2.5
-    if y_pos_ball < 0:
-        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_ball = 500
-        score = 0
-
-    y_pos_rect -= 2.5
-    if y_pos_rect < 0:
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_rect = 500
-
-    # collision
-    if (x_pos_rect == left_car or x_pos_rect == right_car) and (y_pos_rect - 30) == 45:
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_rect = 500
-        score = 0
-
-    if (x_pos_ball == left_car or x_pos_ball == right_car) and (y_pos_ball - 7.5) == 45:
-        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_ball = 500
-        score += 1
-
+        if x_circle[index] == 75 or 150 or 225 or 300:
+            x_circle[index] = random.randrange(0, WIDTH, 38)
 
 def car():
     # drawing the cars
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
     arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
-
-
-def obstacles():
-    arcade.draw_ellipse_filled(x_pos_ball, y_pos_ball, ball_diameter, ball_diameter, arcade.color.BLACK)
-    arcade.draw_rectangle_filled(x_pos_rect, y_pos_rect, rect_width, rect_width, arcade.color.BLACK)
 
 
 def on_key_press(key, modifiers):
@@ -103,9 +82,8 @@ def on_draw():
         elif x == 150:
             arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 15)
 
-    # drawing the obstacles
-    obstacles()
-    obstacles()
+    for x, y in zip(x_circle, y_circle):
+        arcade.draw_circle_filled(x, y, ball_radius, arcade.color.BLUE)
 
     arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
 
