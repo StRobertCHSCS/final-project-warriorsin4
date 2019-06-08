@@ -21,9 +21,10 @@ y_circle = []
 x_square = []
 y_square = []
 
-for _ in range(10):
+x_pos = [37.5, 112.5, 187.5, 262.5]
+for _ in range(4):
     # generate random x and y values
-    x = random.randrange(0, WIDTH, 37)
+    x = x_pos[random.randrange(len(x_pos))]
     y = random.randrange(HEIGHT, HEIGHT*2)
 
     # append the x and y values to the appropriate list
@@ -37,10 +38,8 @@ def on_update(delta_time):
 
         if y_circle[index] < 0:
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_circle[index] = random.randrange(0, WIDTH, 38)
+            x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
-        if x_circle[index] == 75 or 150 or 225 or 300:
-            x_circle[index] = random.randrange(0, WIDTH, 38)
 
 def car():
     # drawing the cars
