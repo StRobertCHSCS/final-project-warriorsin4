@@ -21,7 +21,9 @@ y_circle = []
 x_square = []
 y_square = []
 
+# all possible x values of obstacles.
 x_pos = [37.5, 112.5, 187.5, 262.5]
+
 for _ in range(4):
     # generate random x and y values
     x = x_pos[random.randrange(len(x_pos))]
