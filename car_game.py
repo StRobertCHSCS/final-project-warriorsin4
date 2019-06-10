@@ -35,11 +35,12 @@ for _ in range(4):
 
 
 def on_update(delta_time):
+    global score
     for index in range(len(y_circle)):
         y_circle[index] -= 2.5
 
         if y_circle[index] < 0:
-            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+            y_circle[index] = random.randrange(HEIGHT, HEIGHT+100)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
 
