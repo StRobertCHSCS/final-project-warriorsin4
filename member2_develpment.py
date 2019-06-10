@@ -5,16 +5,16 @@ WIDTH = 300
 HEIGHT = 500
 
 # all possible x values for obstacles
-x_pos = [37.5, 112.5, 187.5, 262.5]
-y_pos = [520, 550, 560, 590, 620, 610, 620, 640, 600, 500]
+x_pos_square = [37.5, 112.5, 187.5, 262.5]
+y_pos_square = [900,  620, 560, 800]
+
+x_pos_circle = [37.5, 112.5, 187.5, 262.5]
+y_pos_circle = [550,  800, 700, 600]
 
 # randomly selecting x_vales for obstacles
-x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
+
 ball_diameter = 15
 
-x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
 rect_width = 30
 
 # player positions
@@ -25,38 +25,52 @@ car_width = 40
 # score counter
 score = 0
 
+x_square_storing = []
+y_square_storing = []
+
+for i in range(10):
+    # generate random x and y values
+    x = x_pos_square[random.randrange(len(x_pos_square))]
+    y = y_pos_square[random.randrange(len(y_pos_square))]
+
+    # append the x and y values to the appropriate list
+    x_square_storing.append(x)
+    y_square_storing.append(y)
+
+x_circle_storing = []
+y_circle_storing = []
+
+for i in range(10):
+    # generate random x and y values
+    x = x_pos_circle[random.randrange(len(x_pos_circle))]
+    y = y_pos_circle[random.randrange(len(y_pos_circle))]
+
+    # append the x and y values to the appropriate list
+    x_circle_storing.append(x)
+    y_circle_storing.append(y)
+
+print(x_square_storing)
 
 def on_update(delta_time):
     global y_pos_ball, y_pos_rect
     global x_pos_rect, x_pos_ball
     global score
 
-    # makes the obstacles fall and reset once at bottom
-    if x_pos_ball == x_pos_rect and (y_pos_ball + 30 == y_pos_rect or y_pos_ball + 30 == y_pos_rect):
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
+    for index in range(len(y_square_storing)):
+        y_square_storing[index] -= 2.5
 
-    y_pos_ball -= 2.5
-    if y_pos_ball < 0:
-        x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
-        score = 0
+        # make a new list
+        if y_square_storing[index] < 0:
+            y_square_storing[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square_storing[index] = x_pos_square[random.randrange(len(x_pos_square))]
 
-    y_pos_rect -= 2.5
-    if y_pos_rect < 0:
-        x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-        y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
+    for index in range(len(y_circle_storing)):
+        y_circle_storing[index] -= 2.5
 
-    # collision
-    # if (x_pos_rect == left_car or x_pos_rect == right_car) and (y_pos_rect - 30) == 45:
-    #     x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-    #     y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
-    #     score = 0
-    #
-    # if (x_pos_ball == left_car or x_pos_ball == right_car) and (y_pos_ball - 7.5) == 45:
-    #     x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-    #     y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
-    #     score += 1
-
+        # make a new list
+        if y_circle_storing[index] < 0:
+            y_circle_storing[index] = random.randrange(HEIGHT, HEIGHT + 50)
+            x_circle_storing[index] = x_pos_circle[random.randrange(len(x_pos_circle))]
 
 
 def car():
@@ -66,9 +80,10 @@ def car():
 
 
 def obstacles():
-    arcade.draw_ellipse_filled(x_pos_ball, y_pos_ball, ball_diameter, ball_diameter, arcade.color.BLACK)
-    arcade.draw_rectangle_filled(x_pos_rect, y_pos_rect, rect_width, rect_width, arcade.color.BLACK)
-
+    for x, y in zip(x_square_storing, y_square_storing):
+        arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLUE)
+    for x, y in zip(x_circle_storing, y_circle_storing):
+        arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.RED)
 
 def on_key_press(key, modifiers):
     global left_car, right_car

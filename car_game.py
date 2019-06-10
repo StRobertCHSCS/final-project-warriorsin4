@@ -4,11 +4,6 @@ import random
 WIDTH = 300
 HEIGHT = 500
 
-# all possible x values for obstacles
-x_pos = [37.5, 112.5, 187.5, 262.5]
-y_pos = [500, 550, 540, 520]
-
-
 # player positions
 left_car = 37.5
 right_car = 262.5
@@ -16,33 +11,49 @@ car_width = 40
 
 # score counter
 score = 0
-ball_diameter = 15
+ball_radius = 15
 rect_width = 30
+
+# empty list storing x and y values of obstacles
+x_circle = []
+y_circle = []
+
+x_square = []
+y_square = []
+
+# all possible x values of obstacles.
+x_pos = [37.5, 112.5, 187.5, 262.5]
+
+for _ in range(2):
+    # generate random x and y values
+    x = x_pos[random.randrange(len(x_pos))]
+    y = random.randrange(HEIGHT, HEIGHT*2)
+
+    # append the x and y values to the appropriate list
+    x_circle.append(x)
+    y_circle.append(y)
 
 
 def on_update(delta_time):
+    global score
 
-    # makes the obstacles fall and reset once at bottom
-    for index in range(len(y_pos)):
-        y_pos[index] -= 5
+    for index in range(len(y_circle)):
+        y_circle[index] -= 2.5
 
-        if y_pos[index] < 0:
-            x_pos = [37.5, 112.5, 187.5, 262.5]
-            y_pos[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_pos[index] = x_pos[random.randrange(len(x_pos))]
+        if y_circle[index] < 0:
+            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_circle[index] = x_pos[random.randrange(len(x_pos))]
+
+    for o, p in zip(x_circle, y_circle):
+        if p - 15 < 45 and o == left_car:
+            print("nn")
+            score += 1
 
 
 def car():
     # drawing the cars
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
     arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
-
-
-def obstacles():
-    for x, y in zip(x_pos, y_pos):
-        arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLACK)
-    for x, y in zip(x_pos, y_pos):
-        arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.BLUE)
 
 
 def on_key_press(key, modifiers):
@@ -79,8 +90,8 @@ def on_draw():
         elif x == 150:
             arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 15)
 
-    # drawing the obstacles
-    obstacles()
+    for x, y in zip(x_circle, y_circle):
+        arcade.draw_circle_filled(x, y, ball_radius, arcade.color.BLUE)
 
     arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
 
