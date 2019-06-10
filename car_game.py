@@ -44,10 +44,10 @@ def on_update(delta_time):
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
-    for o, p in zip(x_circle, y_circle):
-        if p - 15 < 45 and o == left_car:
-            print("nn")
-            score += 1
+    for i in range(len(y_circle)):
+        if y_circle[i] < 45:
+            y_circle[i] = random.randrange(HEIGHT, HEIGHT+50)
+
 
 
 def car():
