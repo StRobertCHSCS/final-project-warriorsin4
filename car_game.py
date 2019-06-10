@@ -27,6 +27,7 @@ def on_update(delta_time):
         y_pos[index] -= 5
 
         if y_pos[index] < 0:
+            x_pos = [37.5, 112.5, 187.5, 262.5]
             y_pos[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_pos[index] = x_pos[random.randrange(len(x_pos))]
 
