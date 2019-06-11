@@ -39,6 +39,7 @@ for _ in range(2):
     x_square.append(square_x)
     y_square.append(square_y)
 
+
 def on_update(delta_time):
     global score
 
@@ -54,16 +55,15 @@ def on_update(delta_time):
             y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_square[index] = x_pos[random.randrange(len(x_pos))]
 
-        if y_circle[index] < 45 and x_circle[index] == left_car:
+        if y_circle[index] < 45 and (x_circle[index] == left_car or x_circle[index] == right_car):
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
             score += 1
 
-        if y_circle[index] < 45 and x_circle[index] == right_car:
-            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_circle[index] = x_pos[random.randrange(len(x_pos))]
-            score += 1
-
+        if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
+            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square[index] = x_pos[random.randrange(len(x_pos))]
+            score = 0
 
 
 def car():
