@@ -21,7 +21,6 @@ y_circle = []
 x_square = []
 y_square = []
 
-collision = False
 # all possible x values of obstacles.
 x_pos = [37.5, 112.5, 187.5, 262.5]
 
@@ -36,25 +35,23 @@ for _ in range(4):
 
 
 def on_update(delta_time):
-    global score, collision
+    global score
 
     for o, p in zip(x_circle, y_circle):
         if p - 15 < 45 and p - 12 > 45 and o == left_car:
             score += 1
-            collision = True
-        else:
-            collision = False
+
+
 
         if p - 15 < 45 and p - 12 > 45 and o == right_car:
             score += 1
-            collision = True
-        else:
-            collision = False
+
+
 
     for index in range(len(y_circle)):
         y_circle[index] -= 2.5
 
-        if y_circle[index] < 0 or collision == True:
+        if y_circle[index] < 0:
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
