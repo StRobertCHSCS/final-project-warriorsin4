@@ -24,7 +24,10 @@ y_square = []
 # all possible x values of obstacles.
 x_pos = [37.5, 112.5, 187.5, 262.5]
 
-for _ in range(2):
+# screen number
+screen_num = 1
+
+for _ in range(3):
     # generate random x and y values
     x = x_pos[random.randrange(len(x_pos))]
     y = random.randrange(HEIGHT, HEIGHT*2)
@@ -38,32 +41,6 @@ for _ in range(2):
 
     x_square.append(square_x)
     y_square.append(square_y)
-
-
-def on_update(delta_time):
-    global score
-
-    for index in range(len(y_circle)):
-        y_circle[index] -= 2.5
-        y_square[index] -= 2.5
-
-        if y_circle[index] < 0:
-            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_circle[index] = x_pos[random.randrange(len(x_pos))]
-
-        if y_square[index] < 0:
-            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_square[index] = x_pos[random.randrange(len(x_pos))]
-
-        if y_circle[index] < 45 and (x_circle[index] == left_car or x_circle[index] == right_car):
-            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_circle[index] = x_pos[random.randrange(len(x_pos))]
-            score += 1
-
-        if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
-            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_square[index] = x_pos[random.randrange(len(x_pos))]
-            score = 0
 
 
 def car():
@@ -96,10 +73,8 @@ def on_mouse_press(x, y, button, modifiers):
     pass
 
 
-def on_draw():
-    arcade.start_render()
+def game_screen(screen_num):
 
-    # draw outlines of track
     for x in range(WIDTH):
         if x % 75 == 0 and x != 150:
             arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 5)
@@ -115,6 +90,38 @@ def on_draw():
     arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
 
     car()
+
+
+def on_update(delta_time):
+    global score
+
+    for index in range(len(y_circle)):
+        y_circle[index] -= 2.5
+        y_square[index] -= 2.5
+
+        if y_circle[index] < 0:
+            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_circle[index] = x_pos[random.randrange(len(x_pos))]
+
+        if y_square[index] < 0:
+            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square[index] = x_pos[random.randrange(len(x_pos))]
+
+        if y_circle[index] < 45 and (x_circle[index] == left_car or x_circle[index] == right_car):
+            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_circle[index] = x_pos[random.randrange(len(x_pos))]
+            score += 1
+
+        if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
+            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square[index] = x_pos[random.randrange(len(x_pos))]
+            score = 0
+
+
+def on_draw():
+    arcade.start_render()
+
+    game_screen(screen_num)
 
 
 def setup():
