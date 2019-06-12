@@ -49,14 +49,14 @@ def on_update(delta_time):
     global y_pos_square, x_pos_square
     # makes the obstacles fall and reset once at bottom
     for i in range(len(y_pos_square)):
-        y_pos_square[i] -= 2.5
+        y_pos_square[i] -= 4
 
         if y_pos_square[i] < 0:
             y_pos_square[i] = random.randrange(HEIGHT, HEIGHT + 50)
             x_pos_square[i] = random.randrange(0, WIDTH)
 
     for i in range(len(y_pos_circle)):
-        y_pos_circle[i] -= 2.5
+        y_pos_circle[i] -= 4
 
         if y_pos_circle[i] < 0:
             y_pos_circle[i] = random.randrange(HEIGHT, HEIGHT + 50)
