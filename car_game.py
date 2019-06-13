@@ -24,38 +24,46 @@ y_square = []
 # all possible x values of obstacles.
 x_pos = [37.5, 112.5, 187.5, 262.5]
 
-for _ in range(4):
+for _ in range(2):
     # generate random x and y values
     x = x_pos[random.randrange(len(x_pos))]
     y = random.randrange(HEIGHT, HEIGHT*2)
+
+    square_x = x_pos[random.randrange(len(x_pos))]
+    square_y = random.randrange(HEIGHT, HEIGHT*2)
 
     # append the x and y values to the appropriate list
     x_circle.append(x)
     y_circle.append(y)
 
+    x_square.append(square_x)
+    y_square.append(square_y)
+
 
 def on_update(delta_time):
     global score
 
-    for o, p in zip(x_circle, y_circle):
-        if p - 15 < 45 and p - 12 > 45 and o == left_car:
-            score += 1
-
-
-
-        if p - 15 < 45 and p - 12 > 45 and o == right_car:
-            score += 1
-
-
-
     for index in range(len(y_circle)):
         y_circle[index] -= 2.5
+        y_square[index] -= 2.5
 
         if y_circle[index] < 0:
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
+        if y_square[index] < 0:
+            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square[index] = x_pos[random.randrange(len(x_pos))]
 
+        if y_circle[index] < 45 and (x_circle[index] == left_car or x_circle[index] == right_car):
+            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_circle[index] = x_pos[random.randrange(len(x_pos))]
+            score += 1
+
+        if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
+            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square[index] = x_pos[random.randrange(len(x_pos))]
+            score = 0
 
 
 def car():
@@ -100,6 +108,9 @@ def on_draw():
 
     for x, y in zip(x_circle, y_circle):
         arcade.draw_circle_filled(x, y, ball_radius, arcade.color.BLUE)
+
+    for f, t in zip(x_square, y_square):
+        arcade.draw_rectangle_filled(f, t, rect_width, rect_width, arcade.color.RED)
 
     arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
 
