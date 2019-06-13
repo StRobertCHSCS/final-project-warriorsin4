@@ -45,10 +45,10 @@ for _ in range(3):
 
 def car():
     # drawing the cars
-    red_car = arcade.load_texture("images/red_car.png")
+    
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
-   # arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
-    arcade.draw_texture_rectangle(right_car, 45, car_width, car_width, red_car)
+    arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
+
 
 def on_key_press(key, modifiers):
     global left_car, right_car
