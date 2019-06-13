@@ -27,25 +27,25 @@ x_pos = [37.5, 112.5, 187.5, 262.5]
 # screen number
 screen_num = 1
 
-for _ in range(3):
-    # generate random x and y values
+for _ in range(2):
+    # generate random x and y values 
     x = x_pos[random.randrange(len(x_pos))]
-    y = random.randrange(HEIGHT, HEIGHT*2)
+    y = random.randrange(HEIGHT, HEIGHT*3)
 
     square_x = x_pos[random.randrange(len(x_pos))]
-    square_y = random.randrange(HEIGHT, HEIGHT*2)
+    square_y = random.randrange(HEIGHT, HEIGHT*3)
 
     # append the x and y values to the appropriate list
     x_circle.append(x)
     y_circle.append(y)
 
     x_square.append(square_x)
-    y_square.append(square_y)
+    y_square.append(square_y + 200)
 
 
 def car():
     # drawing the cars
-    
+
     arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
     arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
 
@@ -97,8 +97,8 @@ def on_update(delta_time):
     global score
 
     for index in range(len(y_circle)):
-        y_circle[index] -= 2.5
-        y_square[index] -= 2.5
+        y_circle[index] -= 6
+        y_square[index] -= 6
 
         if y_circle[index] < 0:
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
