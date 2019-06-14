@@ -12,7 +12,7 @@ car_width = 40
 # score counter
 score = 0
 ball_radius = 15
-rect_width = 30
+rect_width = 26
 
 # empty list storing x and y values of obstacles
 x_circle = []
@@ -98,7 +98,7 @@ def on_update(delta_time):
 
     for index in range(len(y_circle)):
         y_circle[index] -= 6
-        y_square[index] -= 6
+        y_square[index] -= 4
 
         if y_circle[index] < 0:
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
@@ -113,11 +113,11 @@ def on_update(delta_time):
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
             score += 1
 
-        if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
+         if ((y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car)) or
+         x_square[index]):
             y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_square[index] = x_pos[random.randrange(len(x_pos))]
             score = 0
-
 
 def on_draw():
     arcade.start_render()
