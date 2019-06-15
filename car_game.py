@@ -88,7 +88,7 @@ def game_screen(screen_num):
     for f, t in zip(x_square, y_square):
         arcade.draw_rectangle_filled(f, t, rect_width, rect_width, arcade.color.RED)
 
-    arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
+    arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 120)
 
     car()
 
@@ -97,26 +97,35 @@ def on_update(delta_time):
     global score
 
     for index in range(len(y_circle)):
-        y_circle[index] -= 6
-        y_square[index] -= 6
+        y_circle[index] -= 2
+        y_square[index] -= 2
 
+        # if circle reaches bottom of screen, show game over screen
         if y_circle[index] < 0:
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
+        # if square reaches bottom of screen, re draw with random x and y values
         if y_square[index] < 0:
             y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_square[index] = x_pos[random.randrange(len(x_pos))]
+
+        if (x_square[index] > left_car + car_width and
+                x_square[index] + rect_width > left_car and
+                y_square[index] < 45):
+            (print("gay"))
+
 
         if y_circle[index] < 45 and (x_circle[index] == left_car or x_circle[index] == right_car):
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
             score += 1
 
-        if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
-            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
-            x_square[index] = x_pos[random.randrange(len(x_pos))]
-            score = 0
+        #if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
+            #y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            #x_square[index] = x_pos[random.randrange(len(x_pos))]
+            #score = 0
+
 
 
 def on_draw():
