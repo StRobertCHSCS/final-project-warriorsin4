@@ -28,7 +28,7 @@ x_pos = [37.5, 112.5, 187.5, 262.5]
 screen_num = 1
 
 for _ in range(2):
-    # generate random x and y values 
+    # generate random x and y values
     x = x_pos[random.randrange(len(x_pos))]
     y = random.randrange(HEIGHT, HEIGHT*3)
 
@@ -97,8 +97,8 @@ def on_update(delta_time):
     global score
 
     for index in range(len(y_circle)):
-        y_circle[index] -= 2
-        y_square[index] -= 2
+        y_circle[index] -= 4
+        y_square[index] -= 4
 
         # if circle reaches bottom of screen, show game over screen
         if y_circle[index] < 0:
@@ -110,22 +110,16 @@ def on_update(delta_time):
             y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_square[index] = x_pos[random.randrange(len(x_pos))]
 
-        if (x_square[index] > left_car + car_width and
-                x_square[index] + rect_width > left_car and
-                y_square[index] < 45):
-            (print("gay"))
+        # square collision
+        if x_square[index] == left_car and y_square[index] < 45 + rect_width:
+            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square[index] = x_pos[random.randrange(len(x_pos))]
+            score = 0
 
-
-        if y_circle[index] < 45 and (x_circle[index] == left_car or x_circle[index] == right_car):
+        if y_circle[index] - ball_radius * 2 < 45 and (x_circle[index] == left_car or x_circle[index] == right_car):
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
             score += 1
-
-        #if y_square[index] < 45 and (x_square[index] == left_car or x_square[index] == right_car):
-            #y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
-            #x_square[index] = x_pos[random.randrange(len(x_pos))]
-            #score = 0
-
 
 
 def on_draw():

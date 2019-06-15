@@ -1,114 +1,108 @@
 import arcade
 import random
 
-WIDTH = 300
-HEIGHT = 500
+# Set up the constants
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_TITLE = "Shapes!"
 
-# all possible x values for obstacles
-x_pos = [37.5, 112.5, 187.5, 262.5]
-y_pos = [500, 550, 540, 520]
+RECT_WIDTH = 50
+RECT_HEIGHT = 50
 
-# randomly selecting x_vales for obstacles
-x_pos_ball = x_pos[(random.randrange(len(x_pos)))]
-y_pos_ball = y_pos[(random.randrange(len(y_pos)))]
-ball_diameter = 15
+NUMBER_OF_SHAPES = 200
 
-x_pos_rect = x_pos[(random.randrange(len(x_pos)))]
-y_pos_rect = y_pos[(random.randrange(len(y_pos)))]
-rect_width = 30
+class Shape:
 
-# player positions
-left_car = 37.5
-right_car = 262.5
-car_width = 40
+    def __init__(self, x, y, width, height, angle, delta_x, delta_y,
+                 delta_angle, color):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.angle = angle
+        self.delta_x = delta_x
+        self.delta_y = delta_y
+        self.delta_angle = delta_angle
+        self.color = color
 
-# score counter
-score = 0
-
-
-def on_update(delta_time):
-    global y_pos_ball, y_pos_rect
-    global x_pos_rect, x_pos_ball
-    global score
-
-    # makes the obstacles fall and reset once at bottom
-    for index in range(len(y_pos)):
-        y_pos[index] -= 2.5
-
-        if y_pos[index] < 0:
+    def move(self):
+        self.x += self.delta_x
+        self.y += self.delta_y
+        self.angle += self.delta_angle
 
 
+class Ellipse(Shape):
 
-def car():
-    # drawing the cars
-    arcade.draw_rectangle_filled(left_car, 45, car_width, car_width, arcade.color.BLUE)
-    arcade.draw_rectangle_filled(right_car, 45, car_width, car_width, arcade.color.RED)
-
-
-def obstacles():
-    for x, y in zip(x_pos, y_pos):
-        arcade.draw_ellipse_filled(x, y, ball_diameter, ball_diameter, arcade.color.BLACK)
-        arcade.draw_rectangle_filled(x, y, rect_width, rect_width, arcade.color.BLACK)
+    def draw(self):
+        arcade.draw_ellipse_filled(self.x, self.y, self.width, self.height,
+                                   self.color, self.angle)
 
 
+class Rectangle(Shape):
 
-def on_key_press(key, modifiers):
-    global left_car, right_car
-
-    # left car movement controls
-    if key == arcade.key.S and left_car == 37.5:
-        left_car += 75
-    elif key == arcade.key.S and left_car == 112.5:
-        left_car -= 75
-
-    # right car movement controls
-    if key == arcade.key.DOWN and right_car == 262.5:
-        right_car -= 75
-    elif key == arcade.key.DOWN and right_car == 187.5:
-        right_car += 75
+    def draw(self):
+        arcade.draw_rectangle_filled(self.x, self.y, self.width, self.height,
+                                     self.color, self.angle)
 
 
-def on_key_release(key, modifiers):
-    pass
+class MyGame(arcade.Window):
+    """ Main application class. """
+
+    def __init__(self):
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        self.shape_list = None
+
+    def setup(self):
+        """ Set up the game and initialize the variables. """
+        self.shape_list = []
+
+        for i in range(NUMBER_OF_SHAPES):
+            x = random.randrange(0, SCREEN_WIDTH)
+            y = random.randrange(0, SCREEN_HEIGHT)
+            width = random.randrange(10, 30)
+            height = random.randrange(10, 30)
+            angle = random.randrange(0, 360)
+
+            d_x = random.randrange(-3, 4)
+            d_y = random.randrange(-3, 4)
+            d_angle = random.randrange(-3, 4)
+
+            red = random.randrange(256)
+            green = random.randrange(256)
+            blue = random.randrange(256)
+            alpha = random.randrange(256)
+
+            shape_type = random.randrange(2)
+
+            if shape_type == 0:
+                shape = Rectangle(x, y, width, height, angle, d_x, d_y,
+                                  d_angle, (red, green, blue, alpha))
+            else:
+                shape = Ellipse(x, y, width, height, angle, d_x, d_y,
+                                d_angle, (red, green, blue, alpha))
+            self.shape_list.append(shape)
+
+    def update(self, dt):
+        """ Move everything """
+
+        for shape in self.shape_list:
+            shape.move()
+
+    def on_draw(self):
+        """
+        Render the screen.
+        """
+        arcade.start_render()
+
+        for shape in self.shape_list:
+            shape.draw()
 
 
-def on_mouse_press(x, y, button, modifiers):
-    pass
-
-
-def on_draw():
-    arcade.start_render()
-
-    # draw outlines of track
-    for x in range(WIDTH):
-        if x % 75 == 0 and x != 150:
-            arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 5)
-        elif x == 150:
-            arcade.draw_line(x, 0, x, HEIGHT, arcade.color.BLACK, 15)
-
-    # drawing the obstacles
-    obstacles()
-    obstacles()
-
-    arcade.draw_text("Score: " + str(score), 262.5, 400, arcade.color.BLACK, 12, 12)
-
-    car()
-
-
-def setup():
-    arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
-    arcade.set_background_color(arcade.color.WHITE)
-    arcade.schedule(on_update, 1/60)
-
-    # Override arcade window methods
-    window = arcade.get_window()
-    window.on_draw = on_draw
-    window.on_key_press = on_key_press
-    window.on_key_release = on_key_release
-    window.on_mouse_press = on_mouse_press
-
+def main():
+    window = MyGame()
+    window.setup()
     arcade.run()
 
 
-if __name__ == '__main__':
-    setup()
+if __name__ == "__main__":
+    main()

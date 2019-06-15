@@ -6,10 +6,10 @@ HEIGHT = 500
 
 # all possible x values for obstacles
 x_pos_square = [37.5, 112.5, 187.5, 262.5]
-y_pos_square = [900,  620, 560, 800]
+y_pos_square = [1000,  620, 520, 900]
 
 x_pos_circle = [37.5, 112.5, 187.5, 262.5]
-y_pos_circle = [550,  800, 700, 600]
+y_pos_circle = [550,  800, 1200, 600]
 
 # randomly selecting x_vales for obstacles
 
@@ -61,16 +61,19 @@ def on_update(delta_time):
 
         # make a new list
         if y_square_storing[index] < 0:
-            y_square_storing[index] = random.randrange(HEIGHT, HEIGHT+50)
+            y_square_storing[index] = y_pos_square[random.randrange(len(y_pos_square))]
             x_square_storing[index] = x_pos_square[random.randrange(len(x_pos_square))]
 
+        if x_square_storing[index] == 37.5 and y_square_storing[index] == y_square_storing[index] and x_square_storing[index]== 112.5 and y_square_storing[index] == y_square_storing[index]:
+            x_square_storing[index] = x_pos_square[random.randrange(len(x_pos_square))]
+    
     for index in range(len(y_circle_storing)):
         y_circle_storing[index] -= 2.5
 
-        # make a new list
         if y_circle_storing[index] < 0:
-            y_circle_storing[index] = random.randrange(HEIGHT, HEIGHT + 50)
+            y_circle_storing[index] = y_pos_circle[random.randrange(len(y_pos_circle))]
             x_circle_storing[index] = x_pos_circle[random.randrange(len(x_pos_circle))]
+
 
 
 def car():
