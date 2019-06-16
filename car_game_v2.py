@@ -21,24 +21,32 @@ turn_direction_right = False
 
 
 def on_key_press(key, modifiers):
-    global left_acceleration, left_velocity, turn_direction_left, turn_direction_right, left_car_tilt, right_car_tilt, right_acceleration
+    global left_acceleration, left_velocity, right_velocity, turn_direction_left, turn_direction_right, left_car_tilt, right_car_tilt, right_acceleration
 
 # when button is pressed, start accelerating. Direction of movement depends on state
 # of turn_direction. if false turn certain direction, if true turn another direction
     if key == arcade.key.S and turn_direction_left is False:
+        left_velocity = 0
+        left_acceleration = 0
         left_acceleration += 2
         left_car_tilt = -10
         turn_direction_left = True
     elif key == arcade.key.S and turn_direction_left is True:
+        left_velocity = 0
+        left_acceleration = 0
         left_acceleration -= 2
         left_car_tilt = 10
         turn_direction_left = False
 
     if key == arcade.key.DOWN and turn_direction_right is False:
+        right_velocity = 0
+        right_acceleration = 0
         right_acceleration -= 2
         right_car_tilt = 10
         turn_direction_right = True
     elif key == arcade.key.DOWN and turn_direction_right is True:
+        right_velocity = 0
+        right_acceleration = 0
         right_acceleration += 2
         right_car_tilt = -10
         turn_direction_right = False
