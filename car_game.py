@@ -4,6 +4,10 @@ import random
 WIDTH = 300
 HEIGHT = 500
 
+# acceleration and velocity
+velocity = 0
+acceleration = 0
+
 # player positions
 left_car = 37.5
 right_car = 262.5
@@ -51,11 +55,15 @@ def car():
 
 
 def on_key_press(key, modifiers):
-    global left_car, right_car
+    global left_car, right_car, acceleration, velocity
 
     # left car movement controls
-    if key == arcade.key.S and left_car == 37.5:
-        left_car += 75
+    if key == arcade.key.S:
+        while left_car < 112.5:
+            acceleration += 0.000000001
+            velocity += acceleration
+            left_car += velocity
+
     elif key == arcade.key.S and left_car == 112.5:
         left_car -= 75
 
@@ -65,10 +73,11 @@ def on_key_press(key, modifiers):
     elif key == arcade.key.DOWN and right_car == 187.5:
         right_car += 75
 
+    print(velocity)
+    print(left_car)
 
 def on_key_release(key, modifiers):
     pass
-
 
 def on_mouse_press(x, y, button, modifiers):
     pass
