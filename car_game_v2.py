@@ -158,6 +158,16 @@ def on_update(delta_time):
             y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_square[index] = x_pos[random.randrange(len(x_pos))]
 
+        if left_car == x_square[index] and y_square[index] - car_width < 50:
+            print("hit")
+        elif left_car + car_width > x_square[index] - rect_width and x_square[index] < 200 and\
+                y_square[index] - car_width < 50:
+            print("yeet")
+        elif left_car - car_width < x_square[index] + rect_width and x_square[index] < 200 and\
+                y_square[index] - car_width < 50:
+            print("reee")
+
+
 
 def on_draw():
     arcade. start_render()
