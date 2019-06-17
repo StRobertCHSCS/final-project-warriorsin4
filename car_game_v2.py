@@ -35,7 +35,9 @@ y_square = []
 # all possible x values of obstacles.
 x_pos = [50, 150, 250, 350]
 
-
+# set variables for menu screen buttons
+start_button = [100, 275, 200, 100]
+help_button = [100, 150, 200, 100]
 for _ in range(2):
     # generate random x and y values
     x = x_pos[random.randrange(len(x_pos))]
@@ -50,6 +52,9 @@ for _ in range(2):
 
     x_square.append(square_x)
     y_square.append(square_y + 200)
+
+# variable that decides which screen to display
+screen_display = 0
 
 
 def on_key_press(key, modifiers):
@@ -90,7 +95,20 @@ def on_key_release(key, modifiers):
 
 
 def on_mouse_press(x, y, button, modifiers):
-    pass
+    # unpack the list
+    start_button_x, start_button_y, start_button_w, start_button_h = start_button
+
+    # Need to check all four limits of the button.
+    if (x > start_button_x and x < start_button_x + start_button_w and
+            y > start_button_y and y < start_button_y + start_button_h):
+        print("Clicked!!!")
+
+    help_button_x, help_button_y, help_button_w, help_button_h = help_button
+
+    # Need to checl all four limits of button
+    if (x > help_button_x and x < help_button_x + help_button_w and
+            y > help_button_y and y < help_button_y + help_button_h):
+        print("Clicked!!!")
 
 
 def square_collision(x ,y):
@@ -147,11 +165,19 @@ def game_screen():
 
 
 def main_menu():
-    start_button = arcade.load_texture("images/start_button.png")
-    arcade.draw_xywh_rectangle_textured(100, 275, 200, 100, start_button)
+    start = arcade.load_texture("images/start_button.png")
+    arcade.draw_xywh_rectangle_textured(start_button[0],
+                                        start_button[1],
+                                        start_button[2],
+                                        start_button[3],
+                                        start)
 
-    help_button = arcade.load_texture("images/help_button.png")
-    arcade.draw_texture_rectangle(200, 125, 200, 100, help_button)
+    instruction = arcade.load_texture("images/help_button.png")
+    arcade.draw_xywh_rectangle_textured(help_button[0],
+                                        help_button[1],
+                                        help_button[2],
+                                        help_button[3],
+                                        instruction)
 
 
 def on_update(delta_time):
