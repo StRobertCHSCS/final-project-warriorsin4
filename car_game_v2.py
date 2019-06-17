@@ -36,7 +36,7 @@ y_square = []
 x_pos = [50, 150, 250, 350]
 
 # set variables for menu screen buttons
-start_button = [100, 275, 200, 100]
+start_button = [100, 400, 200, 100]
 help_button = [100, 150, 200, 100]
 for _ in range(2):
     # generate random x and y values
