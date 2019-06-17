@@ -1,10 +1,12 @@
 import arcade
 import random
+import math
 
 WIDTH = 400
 HEIGHT = 500
 
 # initializing all car related variables
+car_y = 50
 car_width = 30
 left_car = 50
 left_car_tilt = 0
@@ -91,6 +93,26 @@ def on_mouse_press(x, y, button, modifiers):
     pass
 
 
+def square_collision(x ,y):
+    global left_car, right_car, car_y
+
+    a = math.fabs(x - left_car)
+    b = math.fabs(y - car_y)
+    c = math.sqrt(a**2 + b**2)
+
+    if c <= ((car_width + rect_width)/2):
+        return True
+
+
+def circle_collision(x, y):
+    a = math.fabs(x - left_car)
+    b = math.fabs(y - car_y)
+    c = math.sqrt(a**2 + b**2)
+
+    if c <= ((car_width + rect_width)/2):
+        print("yeet")
+
+
 def game_screen():
     # draw outline of game
     for i in range(WIDTH):
@@ -100,8 +122,8 @@ def game_screen():
             arcade.draw_line(i, 0, i, HEIGHT, arcade.color.BLACK, 10)
 
     # draws the two chars
-    arcade.draw_rectangle_outline(left_car, 50, car_width, car_width, arcade.color.BLUE, 5, left_car_tilt)
-    arcade.draw_rectangle_outline(right_car, 50, car_width, car_width, arcade.color.RED, 5, right_car_tilt)
+    arcade.draw_rectangle_outline(left_car, car_y, car_width, car_width, arcade.color.BLUE, 5, left_car_tilt)
+    arcade.draw_rectangle_outline(right_car, car_y, car_width, car_width, arcade.color.RED, 5, right_car_tilt)
 
     for x, y in zip(x_circle, y_circle):
         arcade.draw_circle_filled(x, y, ball_radius, arcade.color.BLUE)
@@ -158,15 +180,13 @@ def on_update(delta_time):
             y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_square[index] = x_pos[random.randrange(len(x_pos))]
 
-        if left_car == x_square[index] and y_square[index] - car_width < 50:
-            print("hit")
-        elif left_car + car_width > x_square[index] - rect_width and x_square[index] < 200 and\
-                y_square[index] - car_width < 50:
-            print("yeet")
-        elif left_car - car_width < x_square[index] + rect_width and x_square[index] < 200 and\
-                y_square[index] - car_width < 50:
-            print("reee")
+        if square_collision(x_square[index], y_square[index]) is True:
+            y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_square[index] = x_pos[random.randrange(len(x_pos))]
 
+        if circle_collision(x_square[index], y_square[index]):
+            y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+            x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
 
 def on_draw():
