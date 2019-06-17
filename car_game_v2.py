@@ -103,6 +103,13 @@ def square_collision(x ,y):
     if c <= ((car_width + rect_width)/2):
         return True
 
+    a2 = math.fabs(x - right_car)
+    b2 = math.fabs(y - car_y)
+    c2 = math.sqrt(a2**2 + b2**2)
+
+    if c2 <= ((car_width + rect_width)/2):
+        return True
+
 
 def circle_collision(x, y):
     a = math.fabs(x - left_car)
@@ -110,8 +117,14 @@ def circle_collision(x, y):
     c = math.sqrt(a**2 + b**2)
 
     if c <= ((car_width + rect_width)/2):
-        print("yeet")
+        return True
 
+    a2 = math.fabs(x - right_car)
+    b2 = math.fabs(y - car_y)
+    c2 = math.sqrt(a2**2 + b2**2)
+
+    if c2 <= ((car_width + rect_width)/2):
+        return True
 
 def game_screen():
     # draw outline of game
@@ -184,13 +197,13 @@ def on_update(delta_time):
             y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_square[index] = x_pos[random.randrange(len(x_pos))]
 
-        if circle_collision(x_square[index], y_square[index]):
+        if circle_collision(x_circle[index], y_circle[index]) is True:
             y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
             x_circle[index] = x_pos[random.randrange(len(x_pos))]
 
 
 def on_draw():
-    arcade. start_render()
+    arcade.start_render()
     game_screen()
 
 
