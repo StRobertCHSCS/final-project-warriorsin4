@@ -126,6 +126,7 @@ def circle_collision(x, y):
     if c2 <= ((car_width + rect_width)/2):
         return True
 
+
 def game_screen():
     # draw outline of game
     for i in range(WIDTH):
@@ -143,6 +144,14 @@ def game_screen():
 
     for f, t in zip(x_square, y_square):
         arcade.draw_rectangle_filled(f, t, rect_width, rect_width, arcade.color.RED)
+
+
+def main_menu():
+    start_button = arcade.load_texture("images/start_button.png")
+    arcade.draw_xywh_rectangle_textured(100, 275, 200, 100, start_button)
+
+    help_button = arcade.load_texture("images/help_button.png")
+    arcade.draw_texture_rectangle(200, 125, 200, 100, help_button)
 
 
 def on_update(delta_time):
@@ -204,7 +213,8 @@ def on_update(delta_time):
 
 def on_draw():
     arcade.start_render()
-    game_screen()
+    #game_screen()
+    main_menu()
 
 
 def setup():
