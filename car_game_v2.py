@@ -38,6 +38,9 @@ x_pos = [50, 150, 250, 350]
 # set variables for menu screen buttons
 start_button = [100, 400, 200, 100]
 help_button = [100, 150, 200, 100]
+try_again_button = [200, 180, 200, 100]
+main_menu_button = [200, 80, 200, 100]
+
 for _ in range(2):
     # generate random x and y values
     x = x_pos[random.randrange(len(x_pos))]
@@ -54,7 +57,7 @@ for _ in range(2):
     y_square.append(square_y + 200)
 
 # variable that decides which screen to display
-screen_display = 0
+screen_display = 4
 
 
 def on_key_press(key, modifiers):
@@ -102,15 +105,22 @@ def on_mouse_press(x, y, button, modifiers):
 
     # Need to check all four limits of the button.
     if (x > start_button_x and x < start_button_x + start_button_w and
-            y > start_button_y and y < start_button_y + start_button_h):
+            y > start_button_y and y < start_button_y + start_button_h) and screen_display == 0:
         screen_display = 1
-
+        
     help_button_x, help_button_y, help_button_w, help_button_h = help_button
 
     # Need to check all four limits of button
     if (x > help_button_x and x < help_button_x + help_button_w and
-            y > help_button_y and y < help_button_y + help_button_h):
+            y > help_button_y and y < help_button_y + help_button_h) and screen_display == 0:
         screen_display = 2
+
+    try_again_button_x, try_again_button_y, try_again_button_w, try_again_button_h = try_again_button
+
+    # Need to check all four limits of button
+    if (x > try_again_button_x and x < try_again_button_x + try_again_button_w and
+            y > try_again_button_y and y < try_again_button_y + try_again_button_h) and screen_display == 4:
+        screen_display = 1
 
 
 def square_collision(x ,y):
@@ -179,19 +189,58 @@ def game_screen():
             arcade.draw_line(i, 0, i, HEIGHT, arcade.color.BLACK, 10)
 
     # draws the two chars
-    arcade.draw_rectangle_outline(left_car, car_y, car_width, car_width, arcade.color.BLUE, 5, left_car_tilt)
-    arcade.draw_rectangle_outline(right_car, car_y, car_width, car_width, arcade.color.RED, 5, right_car_tilt)
+    arcade.draw_rectangle_outline(left_car,
+                                  car_y,
+                                  car_width,
+                                  car_width,
+                                  arcade.color.BLUE,
+                                  5,
+                                  left_car_tilt)
+
+    arcade.draw_rectangle_outline(right_car,
+                                  car_y,
+                                  car_width,
+                                  car_width,
+                                  arcade.color.RED, 5, right_car_tilt)
 
     for x, y in zip(x_circle, y_circle):
-        arcade.draw_circle_filled(x, y, ball_radius, arcade.color.BLUE)
+        arcade.draw_circle_filled(x, y,
+                                  ball_radius,
+                                  arcade.color.BLUE)
 
     for f, t in zip(x_square, y_square):
-        arcade.draw_rectangle_filled(f, t, rect_width, rect_width, arcade.color.RED)
+        arcade.draw_rectangle_filled(f, t,
+                                     rect_width,
+                                     rect_width,
+                                     arcade.color.RED)
+
+
+def game_over_screen():
+    game_over = arcade.load_texture("images/game_over_screen_.jpg")
+    arcade.draw_texture_rectangle(WIDTH//2,
+                                  HEIGHT//2,
+                                  WIDTH,
+                                  HEIGHT,
+                                  game_over)
+
+    try_again = arcade.load_texture("images/try_again.png")
+    arcade.draw_xywh_rectangle_textured(200,
+                                        180,
+                                        200,
+                                        100,
+                                        try_again)
+
+    main_menu_speech = arcade.load_texture("images/main_menu_speech.png")
+    arcade.draw_xywh_rectangle_textured(200,
+                                        80,
+                                        200,
+                                        100,
+                                        main_menu_speech)
 
 
 def on_update(delta_time):
-    global left_car, left_acceleration, left_velocity, left_car_tilt, right_acceleration, right_acceleration,\
-        right_velocity, right_car, right_car_tilt
+    global left_car, left_acceleration, left_velocity,left_car_tilt, right_acceleration, right_acceleration,\
+        right_velocity, right_car, right_car_tilt, screen_display
 
     if screen_display == 1:
         # constantly updates velocity and acceleration for both cars
@@ -230,8 +279,7 @@ def on_update(delta_time):
 
             # if circle reaches bottom of screen, show game over screen
             if y_circle[index] < 0:
-                y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
-                x_circle[index] = x_pos[random.randrange(len(x_pos))]
+                screen_display = 4
 
             # if square reaches bottom of screen, re draw with random x and y values
             if y_square[index] < 0:
@@ -255,6 +303,10 @@ def on_draw():
         game_screen()
     elif screen_display == 2:
         pass
+    elif screen_display == 3:
+        pass
+    elif screen_display == 4:
+        game_over_screen()
 
 
 def setup():
