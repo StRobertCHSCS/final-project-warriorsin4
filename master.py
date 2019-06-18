@@ -61,6 +61,12 @@ screen_display = 0
 
 
 def on_key_press(key, modifiers):
+    """
+
+    :param key:
+    :param modifiers:
+    :return:
+    """
     global left_acceleration, left_velocity, right_velocity, turn_direction_left, turn_direction_right, left_car_tilt,\
         right_car_tilt, right_acceleration
 
@@ -98,6 +104,14 @@ def on_key_release(key, modifiers):
 
 
 def on_mouse_press(x, y, button, modifiers):
+    """
+
+    :param x:
+    :param y:
+    :param button:
+    :param modifiers:
+    :return:
+    """
     global screen_display
 
     # unpack the list
@@ -124,6 +138,12 @@ def on_mouse_press(x, y, button, modifiers):
 
 
 def square_collision(x ,y):
+    """
+
+    :param x:
+    :param y:
+    :return:
+    """
     global left_car, right_car, car_y
 
     a = math.fabs(x - left_car)
@@ -142,6 +162,11 @@ def square_collision(x ,y):
 
 
 def circle_collision(x, y):
+    """
+    :param x:
+    :param y:
+    :return:
+    """
     a = math.fabs(x - left_car)
     b = math.fabs(y - car_y)
     c = math.sqrt(a**2 + b**2)
@@ -158,6 +183,10 @@ def circle_collision(x, y):
 
 
 def main_menu():
+    """
+
+    :return:
+    """
     background = arcade.load_texture("images/menu_background.gif")
     arcade.draw_texture_rectangle(WIDTH/2, HEIGHT/2, WIDTH, HEIGHT, background)
 
@@ -181,6 +210,10 @@ def instruction_screen():
 
 
 def game_screen():
+    """
+
+    :return:
+    """
     # draw outline of game
     for i in range(WIDTH):
         if i % 100 == 0:
@@ -216,6 +249,10 @@ def game_screen():
 
 
 def game_over_screen():
+    """
+
+    :return:
+    """
     game_over = arcade.load_texture("images/game_over_screen_.jpg")
     arcade.draw_texture_rectangle(WIDTH//2,
                                   HEIGHT//2,
@@ -239,6 +276,11 @@ def game_over_screen():
 
 
 def on_update(delta_time):
+    """
+
+    :param delta_time:
+    :return:
+    """
     global left_car, left_acceleration, left_velocity,left_car_tilt, right_acceleration, right_acceleration,\
         right_velocity, right_car, right_car_tilt, screen_display
 
@@ -296,6 +338,10 @@ def on_update(delta_time):
 
 
 def on_draw():
+    """
+
+    :return:
+    """
     arcade.start_render()
     if screen_display == 0:
         main_menu()
@@ -310,6 +356,10 @@ def on_draw():
 
 
 def setup():
+    """
+    
+    :return:
+    """
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
     arcade.set_background_color(arcade.color.WHITE)
     arcade.schedule(on_update, 1/60)
