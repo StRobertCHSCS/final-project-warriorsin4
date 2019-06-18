@@ -1,6 +1,7 @@
 import arcade
 import random
 import math
+import time
 
 WIDTH = 400
 HEIGHT = 500
@@ -18,6 +19,8 @@ left_velocity = 0
 
 right_acceleration = 0
 right_velocity = 0
+
+gravity = 8
 
 turn_direction_left = False
 turn_direction_right = False
@@ -59,7 +62,7 @@ for _ in range(2):
 
 # variable that decides which screen to display
 screen_display = 0
-score = 0
+score = 9
 
 
 def on_key_press(key, modifiers):
@@ -235,6 +238,7 @@ def instruction_screen():
     instruction = arcade.load_texture("images/instructions.png")
     arcade.draw_texture_rectangle(WIDTH / 2, HEIGHT / 2, 400, 300, instruction)
 
+
 def game_screen():
     """
 
@@ -272,8 +276,9 @@ def game_screen():
                                      rect_width,
                                      rect_width,
                                      arcade.color.RED)
-    # Displays the score 
-    arcade.draw_text("Score: " + str(score), 330, 400, arcade.color.BLACK, 12, 12)
+
+    # Displays the score
+    arcade.draw_text("Score: " + str(score), 330, 400, arcade.color.BLACK, 30, 300)
 
 
 def game_over_screen():
@@ -310,9 +315,10 @@ def on_update(delta_time):
     :return:
     """
     global left_car, left_acceleration, left_velocity,left_car_tilt, right_acceleration, right_acceleration,\
-        right_velocity, right_car, right_car_tilt, screen_display, score
+        right_velocity, right_car, right_car_tilt, screen_display, score, gravity, time
 
     if screen_display == 1:
+
         # constantly updates velocity and acceleration for both cars
         left_velocity += left_acceleration
         left_car += left_velocity
@@ -344,8 +350,8 @@ def on_update(delta_time):
             right_car = 250
 
         for index in range(len(y_circle)):
-            y_circle[index] -= 4
-            y_square[index] -= 4
+            y_circle[index] -= gravity
+            y_square[index] -= gravity
 
             # if circle reaches bottom of screen, show game over screen
             if y_circle[index] < 0:
@@ -353,7 +359,7 @@ def on_update(delta_time):
                 x_circle[index] = x_pos[random.randrange(len(x_pos))]
                 screen_display = 4
                 score = 0
-
+                gravity = 8
             # if square reaches bottom of screen, re draw with random x and y values
             if y_square[index] < 0:
                 y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
@@ -364,14 +370,13 @@ def on_update(delta_time):
                 y_square[index] = random.randrange(HEIGHT, HEIGHT + 50)
                 screen_display = 4
                 score = 0
-
+                gravity = 8
             if circle_collision(x_circle[index], y_circle[index]) is True:
                 y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
                 x_circle[index] = x_pos[random.randrange(len(x_pos))]
                 score += 1
 
     elif screen_display == 4:
-        #global HEIGHT
         for i in range(len(y_circle)):
             y_circle[i] = HEIGHT
             y_square[i] = HEIGHT
