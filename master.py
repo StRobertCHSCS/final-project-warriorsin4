@@ -1,7 +1,6 @@
 import arcade
 import random
 import math
-import time
 
 WIDTH = 400
 HEIGHT = 500
@@ -44,6 +43,8 @@ help_button = [100, 150, 200, 100]
 try_again_button = [200, 180, 200, 100]
 main_menu_button = [200, 80, 200, 100]
 back_menu_button = [25, 420, 100, 50]
+
+time = 1
 
 for _ in range(2):
     # generate random x and y values
@@ -318,6 +319,14 @@ def on_update(delta_time):
         right_velocity, right_car, right_car_tilt, screen_display, score, gravity, time
 
     if screen_display == 1:
+
+        time += 1
+
+        if time % 300 == 0:
+            gravity += 1
+            print("yeet")
+        elif gravity >= 15:
+            gravity = 15
 
         # constantly updates velocity and acceleration for both cars
         left_velocity += left_acceleration
