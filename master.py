@@ -247,6 +247,8 @@ def game_screen():
                                      rect_width,
                                      rect_width,
                                      arcade.color.RED)
+    # Displays the score 
+    arcade.draw_text("Score: " + str(score), 330, 400, arcade.color.BLACK, 12, 12)
 
 
 def game_over_screen():
@@ -339,7 +341,7 @@ def on_update(delta_time):
                 x_circle[index] = x_pos[random.randrange(len(x_pos))]
                 score += 1
 
-    #print(screen_display)
+
 
 
 def on_draw():
