@@ -58,6 +58,7 @@ for _ in range(2):
 
 # variable that decides which screen to display
 screen_display = 0
+score = 0
 
 
 def on_key_press(key, modifiers):
@@ -261,10 +262,10 @@ def game_over_screen():
                                   game_over)
 
     try_again = arcade.load_texture("images/try_again.png")
-    arcade.draw_xywh_rectangle_textured(200,
-                                        180,
-                                        200,
-                                        100,
+    arcade.draw_xywh_rectangle_textured(try_again_button[0],
+                                        try_again_button[1],
+                                        try_again_button[2],
+                                        try_again_button[3],
                                         try_again)
 
     main_menu_speech = arcade.load_texture("images/main_menu_speech.png")
@@ -282,7 +283,7 @@ def on_update(delta_time):
     :return:
     """
     global left_car, left_acceleration, left_velocity,left_car_tilt, right_acceleration, right_acceleration,\
-        right_velocity, right_car, right_car_tilt, screen_display
+        right_velocity, right_car, right_car_tilt, screen_display, score
 
     if screen_display == 1:
         # constantly updates velocity and acceleration for both cars
@@ -329,12 +330,13 @@ def on_update(delta_time):
                 x_square[index] = x_pos[random.randrange(len(x_pos))]
 
             if square_collision(x_square[index], y_square[index]) is True:
-                y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
-                x_square[index] = x_pos[random.randrange(len(x_pos))]
+                screen_display = 4
 
             if circle_collision(x_circle[index], y_circle[index]) is True:
                 y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
                 x_circle[index] = x_pos[random.randrange(len(x_pos))]
+                score += 1
+    #print(screen_display)
 
 
 def on_draw():
