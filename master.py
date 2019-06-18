@@ -348,7 +348,7 @@ def on_update(delta_time):
 
         if time % 300 == 0:
             gravity += 1
-            print("yeet")
+            
         elif gravity >= 15:
             gravity = 15
 
