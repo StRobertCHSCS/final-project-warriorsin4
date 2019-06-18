@@ -247,7 +247,7 @@ def game_screen():
                                      rect_width,
                                      rect_width,
                                      arcade.color.RED)
-    # Displays the score 
+    # Displays the score
     arcade.draw_text("Score: " + str(score), 330, 400, arcade.color.BLACK, 12, 12)
 
 
