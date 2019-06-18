@@ -202,6 +202,15 @@ def circle_collision(x, y):
         return True
 
 
+def obstacle_collision(x1, y1, x2, y2):
+    a = math.fabs(x1 - x2)
+    b = math.fabs(y1 - y2)
+    c = math.sqrt(a**2 + b**2)
+
+    if c <= 200:
+        return True
+
+
 def main_menu():
     """
 
@@ -341,6 +350,7 @@ def on_update(delta_time):
             left_acceleration = 0
             left_car_tilt = 0
             left_car = 150
+
         elif left_car <= 50:
             left_velocity = 0
             left_acceleration = 0
@@ -352,6 +362,7 @@ def on_update(delta_time):
             right_acceleration = 0
             right_car_tilt = 0
             right_car = 350
+
         elif right_car <= 250:
             right_velocity = 0
             right_acceleration = 0
@@ -364,11 +375,12 @@ def on_update(delta_time):
 
             # if circle reaches bottom of screen, show game over screen
             if y_circle[index] < 0:
-                y_circle[index] = random.randrange(HEIGHT, HEIGHT + 50)
+                y_circle[index] = random.randrange(HEIGHT + 200, HEIGHT + 400)
                 x_circle[index] = x_pos[random.randrange(len(x_pos))]
                 screen_display = 4
                 score = 0
                 gravity = 8
+
             # if square reaches bottom of screen, re draw with random x and y values
             if y_square[index] < 0:
                 y_square[index] = random.randrange(HEIGHT, HEIGHT+50)
@@ -380,10 +392,16 @@ def on_update(delta_time):
                 screen_display = 4
                 score = 0
                 gravity = 8
+
             if circle_collision(x_circle[index], y_circle[index]) is True:
-                y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
+                y_circle[index] = random.randrange(HEIGHT + 200, HEIGHT + 300)
                 x_circle[index] = x_pos[random.randrange(len(x_pos))]
                 score += 1
+
+            if obstacle_collision(x_square[index], y_square[index], x_circle[index], y_circle[index]) is True:
+                y_circle[index] = random.randrange(HEIGHT + 200, HEIGHT + 300)
+                x_circle[index] = x_pos[random.randrange(len(x_pos))]
+
 
     elif screen_display == 4:
         for i in range(len(y_circle)):
