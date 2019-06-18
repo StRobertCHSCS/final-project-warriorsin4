@@ -325,7 +325,9 @@ def on_update(delta_time):
             # if circle reaches bottom of screen, show game over screen
             if y_circle[index] < 0:
                 y_circle[index] = random.randrange(HEIGHT, HEIGHT + 50)
+                x_circle[index] = x_pos[random.randrange(len(x_pos))]
                 screen_display = 4
+                score = 0
 
             # if square reaches bottom of screen, re draw with random x and y values
             if y_square[index] < 0:
@@ -333,15 +335,20 @@ def on_update(delta_time):
                 x_square[index] = x_pos[random.randrange(len(x_pos))]
 
             if square_collision(x_square[index], y_square[index]) is True:
+                x_square[index] = x_pos[random.randrange(len(x_pos))]
                 y_square[index] = random.randrange(HEIGHT, HEIGHT + 50)
                 screen_display = 4
+                score = 0
 
             if circle_collision(x_circle[index], y_circle[index]) is True:
                 y_circle[index] = random.randrange(HEIGHT, HEIGHT+50)
                 x_circle[index] = x_pos[random.randrange(len(x_pos))]
                 score += 1
 
-
+    elif screen_display == 4:
+        for i in range(len(y_circle)):
+            y_circle[i] = HEIGHT
+            y_square[i] = HEIGHT
 
 
 def on_draw():
