@@ -57,7 +57,7 @@ for _ in range(2):
     y_square.append(square_y + 200)
 
 # variable that decides which screen to display
-screen_display = 4
+screen_display = 0
 
 
 def on_key_press(key, modifiers):
@@ -107,7 +107,7 @@ def on_mouse_press(x, y, button, modifiers):
     if (x > start_button_x and x < start_button_x + start_button_w and
             y > start_button_y and y < start_button_y + start_button_h) and screen_display == 0:
         screen_display = 1
-        
+
     help_button_x, help_button_y, help_button_w, help_button_h = help_button
 
     # Need to check all four limits of button
