@@ -40,6 +40,7 @@ start_button = [100, 400, 200, 100]
 help_button = [100, 150, 200, 100]
 try_again_button = [200, 180, 200, 100]
 main_menu_button = [200, 80, 200, 100]
+back_menu_button = [25, 420, 100, 50]
 
 for _ in range(2):
     # generate random x and y values
@@ -137,6 +138,20 @@ def on_mouse_press(x, y, button, modifiers):
             y > try_again_button_y and y < try_again_button_y + try_again_button_h) and screen_display == 4:
         screen_display = 1
 
+    main_menu_button_x, main_menu_button_y, main_menu_button_w, main_menu_button_h = main_menu_button
+
+    # Need to check all four limits of button
+    if (x > main_menu_button_x and x < main_menu_button_x + main_menu_button_w and
+            y > main_menu_button_y and y < main_menu_button_y + main_menu_button_h) and screen_display == 4:
+        screen_display = 0
+
+    back_menu_button_x, back_menu_button_y, back_menu_button_w, back_menu_button_h = back_menu_button
+
+    # Need to check all four limits of button
+    if (x > back_menu_button_x and x < back_menu_button_x + back_menu_button_w and
+            y > back_menu_button_y and y < back_menu_button_y + back_menu_button_h) and screen_display == 2:
+        screen_display = 0
+
 
 def square_collision(x ,y):
     """
@@ -207,8 +222,18 @@ def main_menu():
 
 
 def instruction_screen():
-     pass
+    background = arcade.load_texture("images/menu_background.gif")
+    arcade.draw_texture_rectangle(WIDTH / 2, HEIGHT / 2, WIDTH, HEIGHT, background)
 
+    back_button = arcade.load_texture("images/back_button.png")
+    arcade.draw_xywh_rectangle_textured(back_menu_button[0],
+                                        back_menu_button[1],
+                                        back_menu_button[2],
+                                        back_menu_button[3],
+                                        back_button)
+
+    instruction = arcade.load_texture("images/instructions.png")
+    arcade.draw_texture_rectangle(WIDTH / 2, HEIGHT / 2, 400, 300, instruction)
 
 def game_screen():
     """
@@ -346,6 +371,7 @@ def on_update(delta_time):
                 score += 1
 
     elif screen_display == 4:
+        #global HEIGHT
         for i in range(len(y_circle)):
             y_circle[i] = HEIGHT
             y_square[i] = HEIGHT
@@ -362,7 +388,7 @@ def on_draw():
     elif screen_display == 1:
         game_screen()
     elif screen_display == 2:
-        pass
+        instruction_screen()
     elif screen_display == 3:
         pass
     elif screen_display == 4:
